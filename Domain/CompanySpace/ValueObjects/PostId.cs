@@ -24,5 +24,6 @@ public sealed class PostId : ValueObject
         yield return Value;
     }
 
+
     private PostId() { }
 }

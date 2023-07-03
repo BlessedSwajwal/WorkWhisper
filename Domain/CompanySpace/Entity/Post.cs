@@ -8,7 +8,6 @@ public sealed class Post : Entity<PostId>
     public string Title { get; private set; }
     public string Body { get; private set; }
     public bool IsEdited { get; private set; } = false;
-
     public bool IsPrivate { get; private set; }
 
     public MemberId OwnerId { get; private set; }

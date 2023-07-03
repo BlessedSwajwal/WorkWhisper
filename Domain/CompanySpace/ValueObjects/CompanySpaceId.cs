@@ -30,5 +30,7 @@ public sealed class CompanySpaceId : AggregateRootId<Guid>
         yield return Value;
     }
 
+    public static implicit operator Guid(CompanySpaceId id) { return id.Value; }
+
     private CompanySpaceId() { }
 }
