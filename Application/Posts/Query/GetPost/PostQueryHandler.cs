@@ -38,12 +38,12 @@ public class PostQueryHandler : IRequestHandler<GetPostQuery, PostResult>
 
         if (member is not null && member.CompanySpaceId == post.SpaceId)
         {
-            return new PostResult(post.Title, post.Body, post.SpaceId, post.IsPrivate);
+            return new PostResult(post.Title, post.Body, post.SpaceId, post.IsPrivate, post.Comments);
         }
         else if (post.IsPrivate) { 
             throw new UnauthorizedAccessException();
         }
 
-        return new PostResult(post.Title, post.Body, post.SpaceId, post.IsPrivate);
+        return new PostResult(post.Title, post.Body, post.SpaceId, post.IsPrivate, post.Comments);
     }
 }

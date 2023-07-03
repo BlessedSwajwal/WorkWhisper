@@ -1,4 +1,5 @@
-﻿using Domain.CompanySpace;
+﻿using Application.Space.Query.GetAllSpaces;
+using Domain.CompanySpace;
 using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
 using System;
@@ -17,5 +18,5 @@ public interface ISpaceRepository
     bool MemberExistsOrNot(CompanySpaceId spaceId, MemberId memberId);
 
     IReadOnlyCollection<PostId> GetAllPostId(CompanySpaceId id);
-
+    List<CompanySpaceResult> GetAllSpaces();
 }

@@ -1,4 +1,5 @@
-﻿using Application.Common.Interface.Persistence;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interface.Persistence;
 using Application.Common.Services;
 using Application.Members.Common;
 using Domain.CompanySpace.Entity;
@@ -22,6 +23,9 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, M
 
     public async Task<MemberResult> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
     {
+        //Check if member already exists.
+        var memberCheck = _memberRepository.GetMemberByEmail(request.Email);
+        if (memberCheck is not null) throw new MemberAlreadyExistsException();
 
         //Create a member
 

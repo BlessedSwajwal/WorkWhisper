@@ -59,7 +59,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
 
         #endregion
 
-        var postResult = new PostResult(post.Title, post.Body, post.SpaceId.Value, post.IsPrivate);
+        var postResult = new PostResult(post.Title, post.Body, post.SpaceId.Value, post.IsPrivate, post.Comments);
 
         return postResult;
     }

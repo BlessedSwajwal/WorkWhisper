@@ -10,4 +10,4 @@ using System.Threading.Tasks;
 namespace Application.Posts.Command;
 
 public record CreatePostCommand
-(string title, string body, Guid spaceId, Guid memberId, bool isPrivate) : IRequest<PostResult>;
+(string title, string body, bool isPrivate) : IRequest<PostResult>;

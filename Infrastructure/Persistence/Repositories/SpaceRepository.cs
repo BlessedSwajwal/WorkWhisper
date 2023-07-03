@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interface.Persistence;
+using Application.Space.Query.GetAllSpaces;
 using Domain.CompanySpace;
 using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
@@ -23,6 +24,16 @@ public class SpaceRepository : ISpaceRepository
         var company = GetSpaceById(id);
         var postIds = company.PostIds;
         return postIds;
+    }
+
+    public List<CompanySpaceResult> GetAllSpaces()
+    {
+        var result = new List<CompanySpaceResult>();
+        foreach (var space in _companySpace)
+        {
+            result.Add(new CompanySpaceResult(space.Id.Value, space.Name));
+        }
+        return result;
     }
 
     public CompanySpace GetSpaceById(CompanySpaceId companySpaceId)

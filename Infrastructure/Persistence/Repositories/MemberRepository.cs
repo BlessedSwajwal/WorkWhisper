@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class MemberRepository : IMemberRepository
 {
-    private readonly List<Member> _members = new List<Member>();
+    private static List<Member> _members = new List<Member>();
     public Member Add(Member member)
     {
         _members.Add(member);

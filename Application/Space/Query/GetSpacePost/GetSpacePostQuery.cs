@@ -6,6 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Posts.Query.GetSpacePost;
+namespace Application.Space.Query.GetSpacePost;
 
 public record GetSpacePostQuery(Guid SpaceId) : IRequest<List<PostResult>>;

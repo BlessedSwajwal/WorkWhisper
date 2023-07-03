@@ -4,14 +4,9 @@ using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Posts.Query.GetSpacePost;
+namespace Application.Space.Query.GetSpacePost;
 
 public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostResult>>
 {
@@ -46,11 +41,11 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
 
         IReadOnlyCollection<PostId> postIds = _spaceRepository.GetAllPostId(spaceId);
         List<Post> posts = _postRepository.GetPostCollection(postIds);
-        if (!memberOfSpace)
+        if (memberOfSpace)
         {
             foreach (var post in posts)
             {
-                result.Add(new PostResult(post.Title, post.Body, spaceId, post.IsPrivate));
+                result.Add(new PostResult(post.Title, post.Body, spaceId, post.IsPrivate, post.Comments));
             }
         }
         else
@@ -58,7 +53,7 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
             foreach (var post in posts)
             {
                 if (post.IsPrivate) continue;
-                result.Add(new PostResult(post.Title, post.Body, spaceId, post.IsPrivate));
+                result.Add(new PostResult(post.Title, post.Body, spaceId, post.IsPrivate, post.Comments));
             }
         }
 
