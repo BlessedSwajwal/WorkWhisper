@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Comments.Command;
+namespace Application.Comments.Command.CreateComment;
 
 public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand>
 {

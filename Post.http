@@ -1,0 +1,34 @@
+@host=https://localhost:7278/posts
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE2Mzc2NTU2LWY1ZDUtNDkyYS05NDBhLWRjMGJmZDg2MzNjNCIsIlNwYWNlSWQiOiJiNjRiMTFjNi0yMTZkLTQxOWYtYjNlYS1kNjczMzQ5NzI2MmYiLCJleHAiOjE2OTA4MDA4MTYsImlzcyI6IldvcmtXaGlzcGVyIiwiYXVkIjoiTWVtYmVyIn0.d0wScy_lcLeWZtyAv__8yUxJ9DKnk39yhbBThHO9oQg
+@postId=b8d23faf-9bd0-48a1-bb47-7b4488757774
+@commentId=011899ac-91c9-4e94-8f09-da8ae3053084
+
+
+POST {{host}}/create
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "Title": "This is title",
+    "Body": "The body is a bit longer than the post. As it should be.",
+    "IsPrivate": true
+}
+
+#######
+
+POST {{host}}/{{postId}}/comment
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "CommentText": "Second"
+}
+
+#######
+GET {{host}}/{{postId}}
+Authorization: Bearer {{token}}
+
+#######
+POST {{host}}/{{postId}}/{{commentId}}/upvote
+Authorization: Bearer {{token}}
+

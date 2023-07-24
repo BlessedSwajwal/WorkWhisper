@@ -1,11 +1,11 @@
-@host=https://localhost:7278/
+@host=https://localhost:7278
 
 POST {{host}}/Members/Register
 Content-Type: application/json
 
 {
     "Name": "Sajal Ghimire",
-    "Email": "sajaluj@gmail.com",
-    "Password": "12u2fwjbw",
-    "CompanySpaceId": ""
+    "Email": "sajaluj2@gmail.com",
+    "Password": "12u2Fw#jbw",
+    "CompanySpaceId": "b64b11c6-216d-419f-b3ea-d6733497262f"
 }

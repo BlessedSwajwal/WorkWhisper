@@ -33,7 +33,7 @@ public static class DependencyInjectionRegisterer
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => new TokenValidationParameters()
+            .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateAudience = true,
                 ValidateIssuer = true,

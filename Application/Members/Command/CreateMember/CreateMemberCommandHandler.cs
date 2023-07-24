@@ -27,6 +27,11 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, M
         var memberCheck = _memberRepository.GetMemberByEmail(request.Email);
         if (memberCheck is not null) throw new MemberAlreadyExistsException();
 
+        //Get the company 
+        var Space = _spaceRepository.GetSpaceById(CompanySpaceId.Create(request.CompanySpaceId));
+
+        if (Space is null) throw new InvalidSpaceException();
+
         //Create a member
 
         var password = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -34,17 +39,14 @@ public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, M
 
         //Save member
         Member mResult = _memberRepository.Add(member);
-
-        //Get the company Name
-        var Space = _spaceRepository.GetSpaceById(mResult.CompanySpaceId);
-
-        string Name = (Space is null) ? "TempUser" : Space.Name;
+        _spaceRepository.AddMember(member, Space);
+        
 
         //Generate token
         string token = _jwtGenerator.GenerateJwt(mResult);
 
         //Create member Result
-        MemberResult result = new(mResult.Name, mResult.Email, mResult.CompanySpaceId, Name, token);
+        MemberResult result = new(mResult.Name, mResult.Email, mResult.CompanySpaceId, Space.Name, token);
 
         return result;
     }

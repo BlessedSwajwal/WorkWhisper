@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class PostRepository : IPostRepository
 {
-    private readonly List<Post> _posts = new List<Post>();
+    private static readonly List<Post> _posts = new List<Post>();
     public Post Add(Post post)
     {
         _posts.Add(post);
@@ -42,4 +42,14 @@ public class PostRepository : IPostRepository
 
         return posts;
     }
+
+    public Comment GetComment(PostId postId, CommentId commentId) {
+        var post = _posts.FirstOrDefault(p => p.Id == postId);
+        if (post is null) throw new Exception("No such post found.");
+
+        var comment = post.Comments.Where(c => c.Id == commentId).FirstOrDefault();
+        if (comment is null) throw new Exception("No such comment.");
+        return comment;
+    }
+
 }

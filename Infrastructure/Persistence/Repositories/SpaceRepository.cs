@@ -36,6 +36,11 @@ public class SpaceRepository : ISpaceRepository
         return result;
     }
 
+    public void AddMember(Member member, CompanySpace space)
+    {
+        _companySpace.FirstOrDefault(c => c == space)?.AddMember(member.Id);
+    }
+
     public CompanySpace GetSpaceById(CompanySpaceId companySpaceId)
     {
         return _companySpace.FirstOrDefault(sp => sp.Id == companySpaceId);

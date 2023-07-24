@@ -19,7 +19,7 @@ public class PostQueryHandler : IRequestHandler<GetPostQuery, PostResult>
     private readonly IPostRepository _postRepository;
     private readonly IMemberRepository _memberRepository;
 
-    public PostQueryHandler(IHttpContextAccessor context, IPostRepository postRepository, IMemberRepository memberRepository)
+    public PostQueryHandler(IHttpContextAccessor context, IPostRepository postRepository, IMemberRepository memberRepository, ISpaceRepository spaceRepository)
     {
         _context = context.HttpContext;
         _postRepository = postRepository;
@@ -28,7 +28,6 @@ public class PostQueryHandler : IRequestHandler<GetPostQuery, PostResult>
 
     public async Task<PostResult> Handle(GetPostQuery request, CancellationToken cancellationToken)
     {
-        bool isMemberOfSpace = false;
 
         var member = _memberRepository.GetMemberById(MemberId.Create(_context.User.Claims.FirstOrDefault(cl => cl.Type == ClaimTypes.NameIdentifier)!.Value));
 
@@ -38,12 +37,12 @@ public class PostQueryHandler : IRequestHandler<GetPostQuery, PostResult>
 
         if (member is not null && member.CompanySpaceId == post.SpaceId)
         {
-            return new PostResult(post.Title, post.Body, post.SpaceId, post.IsPrivate, post.Comments);
+            return new PostResult(post.Id.Value, post.Title, post.Body, post.SpaceId, post.IsPrivate, post.Comments);
         }
         else if (post.IsPrivate) { 
             throw new UnauthorizedAccessException();
         }
 
-        return new PostResult(post.Title, post.Body, post.SpaceId, post.IsPrivate, post.Comments);
+        return new PostResult(post.Id.Value, post.Title, post.Body, post.SpaceId, post.IsPrivate, post.Comments);
     }
 }

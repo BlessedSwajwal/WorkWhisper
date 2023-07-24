@@ -34,14 +34,14 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
         var memberId = MemberId.Create(Guid.Parse(_context.User.Claims.FirstOrDefault(cl => cl.Type == ClaimTypes.NameIdentifier).Value));
 
         var member = _memberRepository.GetMemberById(memberId);
-
+        if (member is null) throw new MemberNotFoundException();
 
         Post post = Post.Create(
-            title: request.title,
-            body: request.body,
+            title: request.Title,
+            body: request.Body,
             spaceId: member.CompanySpaceId,
             memberId: memberId,
-            isPrivate: request.isPrivate);
+            isPrivate: request.IsPrivate);
 
         _postRepository.Add(post);
 
@@ -59,7 +59,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
 
         #endregion
 
-        var postResult = new PostResult(post.Title, post.Body, post.SpaceId.Value, post.IsPrivate, post.Comments);
+        var postResult = new PostResult(post.Id.Value, post.Title, post.Body, post.SpaceId.Value, post.IsPrivate, post.Comments);
 
         return postResult;
     }

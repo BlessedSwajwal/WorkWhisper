@@ -16,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Requests", "Requests", "{00B81FB9-5FC5-4402-85BD-1FC4054CCD31}"
 	ProjectSection(SolutionItems) = preProject
 		auth.http = auth.http
+		Post.http = Post.http
+		Space.http = Space.http
 	EndProjectSection
 EndProject
 Global

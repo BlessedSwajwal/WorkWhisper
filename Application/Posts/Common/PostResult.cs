@@ -7,4 +7,4 @@ using System.Threading.Tasks;
 
 namespace Application.Posts.Common;
 
-public record PostResult(string Title, string Body, Guid SpaceId, bool isPrivate, IReadOnlyCollection<Comment> comments);
+public record PostResult(Guid id, string Title, string Body, Guid SpaceId, bool isPrivate, IReadOnlyCollection<Comment> comments);

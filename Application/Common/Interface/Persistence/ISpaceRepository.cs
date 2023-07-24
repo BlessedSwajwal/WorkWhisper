@@ -19,4 +19,5 @@ public interface ISpaceRepository
 
     IReadOnlyCollection<PostId> GetAllPostId(CompanySpaceId id);
     List<CompanySpaceResult> GetAllSpaces();
+    void AddMember(Member member, CompanySpace space);
 }

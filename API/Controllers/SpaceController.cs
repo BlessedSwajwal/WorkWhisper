@@ -12,7 +12,6 @@ namespace API.Controllers;
 
 [Route("Space")]
 [ApiController]
-[AllowAnonymous]
 public class SpaceController : ControllerBase
 {
     private readonly ISender _mediator;
@@ -23,6 +22,7 @@ public class SpaceController : ControllerBase
         _mapster = mapster;
     }
 
+    [AllowAnonymous]
     [HttpPost("Create")]
     public async Task<IActionResult> CreateSpace(CreateSpaceRequest request)
     {
@@ -31,14 +31,16 @@ public class SpaceController : ControllerBase
         return Ok();
     }
 
+  //  [AllowAnonymous]
     [HttpGet("{spaceId}")]
     public async Task<IActionResult> GetSpacePosts([FromRoute] Guid spaceId)
     {
-        var query = new GetSpacePostQuery(spaceId);
+        var query = new GetSpacePostQuery(spaceId, User);
         var result = await _mediator.Send(query);
         return Ok(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("AllSpaces")]
     public async Task<IActionResult> GetAllSpace()
     {

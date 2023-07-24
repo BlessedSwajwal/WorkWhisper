@@ -12,12 +12,10 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
 {
     private readonly ISpaceRepository _spaceRepository;
     private readonly IPostRepository _postRepository;
-    private readonly HttpContext _context;
 
-    public GetSpacePostHandler(ISpaceRepository spaceRepository, IHttpContextAccessor context, IPostRepository postRepository)
+    public GetSpacePostHandler(ISpaceRepository spaceRepository, IPostRepository postRepository)
     {
         _spaceRepository = spaceRepository;
-        _context = context.HttpContext;
         _postRepository = postRepository;
     }
 
@@ -27,7 +25,7 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
 
         bool memberOfSpace = false;
         List<PostResult> result = new List<PostResult>();
-        var memberId = _context.User.Claims.FirstOrDefault(cl => cl.Type == ClaimTypes.NameIdentifier).Value;
+        string? memberId = request.User.Claims.FirstOrDefault(cl => cl.Type == ClaimTypes.NameIdentifier)?.Value;
 
 
         var spaceId = CompanySpaceId.Create(request.SpaceId);
@@ -45,7 +43,7 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
         {
             foreach (var post in posts)
             {
-                result.Add(new PostResult(post.Title, post.Body, spaceId, post.IsPrivate, post.Comments));
+                result.Add(new PostResult(post.Id.Value, post.Title, post.Body, spaceId, post.IsPrivate, post.Comments));
             }
         }
         else
@@ -53,7 +51,7 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
             foreach (var post in posts)
             {
                 if (post.IsPrivate) continue;
-                result.Add(new PostResult(post.Title, post.Body, spaceId, post.IsPrivate, post.Comments));
+                result.Add(new PostResult(post.Id.Value, post.Title, post.Body, spaceId, post.IsPrivate, post.Comments));
             }
         }
 

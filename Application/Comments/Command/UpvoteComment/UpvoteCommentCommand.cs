@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Comments.Command;
+namespace Application.Comments.Command.UpvoteComment;
 
-public record CreateCommentCommand
+public record UpvoteCommentCommand
 (
+    Guid UserId,
     Guid PostId,
-    string Comment
-)  : IRequest;
+    Guid CommentId
+) : IRequest;

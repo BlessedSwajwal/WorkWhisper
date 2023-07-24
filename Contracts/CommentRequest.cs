@@ -6,5 +6,8 @@ using System.Threading.Tasks;
 
 namespace Contracts;
 
-public record CreatePostRequest(
-    string Title, string Body, bool IsPrivate);
+public class CommentRequest
+{
+    public string? CommentText { get; init; }
+    public Guid? PostId { get; set; }
+}

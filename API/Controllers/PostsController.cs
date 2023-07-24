@@ -1,10 +1,14 @@
-﻿using Application.Posts.Command;
+﻿using Application.Comments.Command.CreateComment;
+using Application.Comments.Command.UpvoteComment;
+using Application.Posts.Command;
 using Application.Posts.Query.GetPost;
 using Contracts;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers;
 
@@ -35,5 +39,23 @@ public class PostsController : ControllerBase
         var query = new GetPostQuery(postId);
         var result = await _mediator.Send(query);
         return Ok(result);
+    }
+
+    [HttpPost("{postId}/comment")]
+    public async Task<IActionResult> GetComments([FromRoute] Guid postId, CommentRequest request)
+    {
+        request.PostId = postId;
+        var command = _mapster.Map<CreateCommentCommand>(request);
+        await _mediator.Send(command);
+        return Ok(request);
+    }
+
+    [HttpPost("{postId}/{commentId}/upvote")]
+    public async Task<IActionResult> UpvoteComment([FromRoute] Guid postId, [FromRoute] Guid commentId)
+    {
+        var command = new UpvoteCommentCommand(Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)!.Value), postId, commentId);
+
+        await _mediator.Send(command);
+        return Ok();
     }
 }

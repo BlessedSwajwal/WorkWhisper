@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 
 {
     var config = TypeAdapterConfig.GlobalSettings;
-    config.Scan(Assembly.GetExecutingAssembly());
+    config.Scan(typeof(Program).Assembly);
 
     builder.Services.AddSingleton(config);
     builder.Services.AddScoped<IMapper, ServiceMapper>();
@@ -28,6 +28,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+
+app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

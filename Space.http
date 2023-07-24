@@ -1,0 +1,19 @@
+@host=https://localhost:7278
+@spaceId=b64b11c6-216d-419f-b3ea-d6733497262f
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImNmZmIxOTcyLWFmNDAtNGE1OS1iZjQwLWFiODYwNWNiYzgzZCIsIlNwYWNlSWQiOiIzYTc1NDFjYS0yNzhkLTQ2NmQtOTUwMC1hMGU5N2ZmMmYzMTgiLCJleHAiOjE2OTA3OTkxMDcsImlzcyI6IldvcmtXaGlzcGVyIiwiYXVkIjoiTWVtYmVyIn0.i6NvMuQNKdy9iyu_wcUOj58KZgNM59PcUnG76ZSvKAU
+
+POST {{host}}/Space/Create
+Content-Type: application/json
+
+{
+    "Name": "WorkWhisperer"
+}
+
+###
+
+GET {{host}}/Space/AllSpaces
+
+###
+
+GET {{host}}/Space/{{spaceId}}
+Authorization: Bearer {{token}}
