@@ -52,4 +52,8 @@ public class PostRepository : IPostRepository
         return comment;
     }
 
+    public void UpvotePost(MemberId memberId, Post post)
+    {
+        post.Upvote(memberId);
+    }
 }

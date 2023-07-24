@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Posts.Command;
+namespace Application.Posts.Command.CreatePost;
 
 public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
 {

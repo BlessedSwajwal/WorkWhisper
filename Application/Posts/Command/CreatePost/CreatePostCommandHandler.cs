@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Posts.Command;
+namespace Application.Posts.Command.CreatePost;
 
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostResult>
 {

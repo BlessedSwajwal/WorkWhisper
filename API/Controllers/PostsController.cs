@@ -1,6 +1,7 @@
 ﻿using Application.Comments.Command.CreateComment;
 using Application.Comments.Command.UpvoteComment;
-using Application.Posts.Command;
+using Application.Posts.Command.CreatePost;
+using Application.Posts.Command.UpvotePost;
 using Application.Posts.Query.GetPost;
 using Contracts;
 using MapsterMapper;
@@ -54,6 +55,15 @@ public class PostsController : ControllerBase
     public async Task<IActionResult> UpvoteComment([FromRoute] Guid postId, [FromRoute] Guid commentId)
     {
         var command = new UpvoteCommentCommand(Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)!.Value), postId, commentId);
+
+        await _mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPost("{postId}/upvote")]
+    public async Task<IActionResult> UpvotePost([FromRoute] Guid postId)
+    {
+        var command = new UpvotePostCommand(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), postId);
 
         await _mediator.Send(command);
         return Ok();

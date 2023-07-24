@@ -1,4 +1,4 @@
-﻿using Application.Posts.Command;
+﻿using Application.Posts.Command.CreatePost;
 using Contracts;
 using Mapster;
 

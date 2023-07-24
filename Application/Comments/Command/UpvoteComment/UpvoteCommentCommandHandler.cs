@@ -22,7 +22,8 @@ public class UpvoteCommentCommandHandler : IRequestHandler<UpvoteCommentCommand>
     {
         var comment = _postRepository.GetComment(PostId.Create(request.PostId), CommentId.Create(request.CommentId));
 
-        //TO DO - Check if the user has already upvoted the comment.
+        if (comment.UpvotingMemberIds.Contains(MemberId.Create(request.UserId))) { return; }
+
         comment.Upvote(MemberId.Create(request.UserId));
     }
 }
