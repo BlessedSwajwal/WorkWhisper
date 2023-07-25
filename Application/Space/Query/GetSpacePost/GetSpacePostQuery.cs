@@ -9,4 +9,4 @@ using System.Threading.Tasks;
 
 namespace Application.Space.Query.GetSpacePost;
 
-public record GetSpacePostQuery(Guid SpaceId, ClaimsPrincipal User) : IRequest<List<PostResult>>;
+public record GetSpacePostQuery(Guid SpaceId, ClaimsPrincipal User) : IRequest<List<PostResponse>>;

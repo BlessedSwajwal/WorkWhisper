@@ -43,12 +43,12 @@ public class PostsController : ControllerBase
     }
 
     [HttpPost("{postId}/comment")]
-    public async Task<IActionResult> GetComments([FromRoute] Guid postId, CommentRequest request)
+    public async Task<IActionResult> PostComment([FromRoute] Guid postId, CommentRequest request)
     {
         request.PostId = postId;
         var command = _mapster.Map<CreateCommentCommand>(request);
-        await _mediator.Send(command);
-        return Ok(request);
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 
     [HttpPost("{postId}/{commentId}/upvote")]

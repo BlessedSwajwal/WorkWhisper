@@ -1,4 +1,5 @@
-﻿using Application.Common.Interface.Persistence;
+﻿using Application.Common;
+using Application.Common.Interface.Persistence;
 using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
 using MediatR;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Comments.Command.CreateComment;
 
-public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand>
+public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CommentResult>
 {
     private readonly HttpContext _context;
     private readonly IPostRepository _postRepository;
@@ -23,7 +24,7 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand>
         _postRepository = commentRepository;
     }
 
-    public async Task Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+    public async Task<CommentResult> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
         //Get the member who commented.
         var memberId = MemberId.Create(Guid.Parse(_context.User.FindFirst(ClaimTypes.NameIdentifier)!.Value));
@@ -36,6 +37,7 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand>
         //save comment to post
         _postRepository.AddComment(request.PostId, comment);
 
-        return;
+        var result = new CommentResult(comment.Id.Value, comment.Text, memberId, comment.UpvotingMemberIds.Count); 
+        return result;
     }
 }

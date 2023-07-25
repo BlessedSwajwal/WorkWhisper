@@ -1,20 +1,17 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common;
+using Application.Common.Exceptions;
 using Application.Common.Interface.Persistence;
 using Application.Posts.Common;
 using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Posts.Command.CreatePost;
 
-public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostResult>
+public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostResponse>
 {
     private readonly HttpContext _context;
     private readonly ISpaceRepository _spaceRepository;
@@ -29,7 +26,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
         _postRepository = postRepository;
     }
 
-    public async Task<PostResult> Handle(CreatePostCommand request, CancellationToken cancellationToken)
+    public async Task<PostResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
         var memberId = MemberId.Create(Guid.Parse(_context.User.Claims.FirstOrDefault(cl => cl.Type == ClaimTypes.NameIdentifier).Value));
 
@@ -59,7 +56,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
 
         #endregion
 
-        var postResult = new PostResult(post.Id.Value, post.Title, post.Body, post.SpaceId.Value, post.IsPrivate, post.Comments);
+        var postResult = new PostResponse(post.Id.Value, post.Title, post.Body, post.SpaceId.Value, post.IsPrivate, post.UpvotingMemberIds.Count, new List<CommentResult>());
 
         return postResult;
     }

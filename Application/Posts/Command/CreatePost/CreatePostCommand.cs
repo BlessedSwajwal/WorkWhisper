@@ -7,4 +7,4 @@ public record CreatePostCommand(
     string Title,
     string Body,
     bool IsPrivate
-) : IRequest<PostResult>;
+) : IRequest<PostResponse>;

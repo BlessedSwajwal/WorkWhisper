@@ -11,4 +11,4 @@ namespace Application.Posts.Query.GetPost;
 public record GetPostQuery
 (
     Guid PostId
-) : IRequest<PostResult>;
+) : IRequest<PostResponse>;
