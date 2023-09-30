@@ -1,5 +1,7 @@
 ﻿using Domain.Common.Models;
 using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,14 +30,14 @@ public class CompanySpace : AggregateRoot<CompanySpaceId, Guid>
                    name);
     }
 
-    public void AddMember(MemberId memberId)
+    public void AddMember(Guid memberId)
     {
-        _members.Add(memberId);
+        _members.Add(MemberId.Create(memberId));
     }
 
-    public void AddPost(PostId postId)
+    public void AddPost(Guid postId)
     {
-        _postIds.Add(postId);
+        _postIds.Add(PostId.Create(postId));
     }
 
 

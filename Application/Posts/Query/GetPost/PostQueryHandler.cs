@@ -2,7 +2,8 @@
 using Application.Common.Exceptions;
 using Application.Common.Interface.Persistence;
 using Application.Posts.Common;
-using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;

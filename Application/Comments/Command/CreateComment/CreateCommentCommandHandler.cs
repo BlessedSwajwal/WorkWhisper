@@ -1,7 +1,7 @@
 ﻿using Application.Common;
 using Application.Common.Interface.Persistence;
-using Domain.CompanySpace.Entity;
-using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.Entity;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;

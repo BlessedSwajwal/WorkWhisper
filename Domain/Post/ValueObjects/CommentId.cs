@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.CompanySpace.ValueObjects;
+namespace Domain.Post.ValueObjects;
 
 public class CommentId : ValueObject
 {
     public Guid Value { get; private set; }
 
-    private CommentId(Guid id) {
+    private CommentId(Guid id)
+    {
         Value = id;
     }
 

@@ -2,8 +2,8 @@
 using Application.Common.Interface.Persistence;
 using Application.Common.Services;
 using Application.Members.Common;
-using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
+using Domain.Member;
 using MediatR;
 
 namespace Application.Members.Command.CreateMember;

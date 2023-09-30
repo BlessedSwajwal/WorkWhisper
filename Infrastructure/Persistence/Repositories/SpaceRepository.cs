@@ -1,8 +1,10 @@
 ﻿using Application.Common.Interface.Persistence;
 using Application.Space.Query.GetAllSpaces;
 using Domain.CompanySpace;
-using Domain.CompanySpace.Entity;
 using Domain.CompanySpace.ValueObjects;
+using Domain.Member;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +40,7 @@ public class SpaceRepository : ISpaceRepository
 
     public void AddMember(Member member, CompanySpace space)
     {
-        _companySpace.FirstOrDefault(c => c == space)?.AddMember(member.Id);
+        _companySpace.FirstOrDefault(c => c == space)?.AddMember(member.Id.Value);
     }
 
     public CompanySpace GetSpaceById(CompanySpaceId companySpaceId)

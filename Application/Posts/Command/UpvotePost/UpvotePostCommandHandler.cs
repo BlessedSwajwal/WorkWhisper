@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interface.Persistence;
-using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 using MediatR;
 
 namespace Application.Posts.Command.UpvotePost;

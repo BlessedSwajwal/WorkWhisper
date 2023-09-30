@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.CompanySpace.ValueObjects;
+namespace Domain.Post.ValueObjects;
 
-public sealed class PostId : ValueObject
+public sealed class PostId : AggregateRootId<Guid>
 {
-    public Guid Value { get; private set; }
+    public override Guid Value { get; protected set; }
 
     private PostId(Guid value)
     {

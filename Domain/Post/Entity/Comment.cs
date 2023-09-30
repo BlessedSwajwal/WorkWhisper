@@ -1,12 +1,8 @@
 ﻿using Domain.Common.Models;
-using Domain.CompanySpace.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 
-namespace Domain.CompanySpace.Entity;
+namespace Domain.Post.Entity;
 
 public sealed class Comment : Entity<CommentId>
 {
@@ -17,8 +13,8 @@ public sealed class Comment : Entity<CommentId>
 
     private Comment(CommentId id, string text, MemberId commenterId) : base(id)
     {
-       Text = text;
-       CommentorId = commenterId;
+        Text = text;
+        CommentorId = commenterId;
     }
 
     public static Comment Create(string text, MemberId commenterId)

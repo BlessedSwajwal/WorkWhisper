@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.CompanySpace.ValueObjects;
+namespace Domain.Member.ValueObjects;
 
-public class MemberId : ValueObject
+public class MemberId : AggregateRootId<Guid>
 {
-    public Guid Value { get; private set; }
+    public override Guid Value { get; protected set; }
 
     private MemberId(Guid id)
     {
         Value = id;
     }
 
-    public static MemberId Create( Guid id) => new MemberId(id);
+    public static MemberId Create(Guid id) => new MemberId(id);
     public static MemberId Create(string id) => new MemberId(Guid.Parse(id));
 
     public static MemberId CreateUnique() => new MemberId(Guid.NewGuid());

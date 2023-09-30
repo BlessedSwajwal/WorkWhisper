@@ -7,24 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Persistence.Repositories;
+namespace Infrastructure.Persistence.EFCoreRepositories;
 
 public class MemberRepository : IMemberRepository
 {
-    private static List<Member> _members = new List<Member>();
     public Member Add(Member member)
     {
-        _members.Add(member);
-        return member;
+        throw new NotImplementedException();
     }
 
     public Member? GetMemberByEmail(string email)
     {
-        return _members.FirstOrDefault(m => m.Email == email);      
+        throw new NotImplementedException();
     }
 
     public Member? GetMemberById(MemberId memberId)
     {
-        return _members.FirstOrDefault(m => m.Id == memberId);
+        throw new NotImplementedException();
     }
 }

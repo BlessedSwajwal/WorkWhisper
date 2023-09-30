@@ -2,7 +2,7 @@
 using Application.Common.Interface.Persistence;
 using Application.Common.Services;
 using Application.Members.Common;
-using Domain.CompanySpace.Entity;
+using Domain.Member;
 using MediatR;
 using System;
 using System.Collections.Generic;

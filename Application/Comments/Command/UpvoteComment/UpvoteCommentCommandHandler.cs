@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interface.Persistence;
-using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 using MediatR;
 using System;
 using System.Collections.Generic;

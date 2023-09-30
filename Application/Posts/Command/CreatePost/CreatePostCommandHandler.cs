@@ -2,8 +2,8 @@
 using Application.Common.Exceptions;
 using Application.Common.Interface.Persistence;
 using Application.Posts.Common;
-using Domain.CompanySpace.Entity;
-using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
@@ -47,12 +47,12 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
         #region EventRegion
 
         //Adding postId to the member
-        member.AddPost(post.Id);
+        member.AddPost(post.Id.Value);
 
         //Addind postId to the space
         var space = _spaceRepository.GetSpaceById(member.CompanySpaceId);
         if (space is null) throw new SpaceNotFoundException();
-        space.AddPost(post.Id);
+        space.AddPost(post.Id.Value);
 
         #endregion
 

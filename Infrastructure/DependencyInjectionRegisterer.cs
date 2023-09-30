@@ -1,8 +1,10 @@
 ﻿using Application.Common.Interface.Persistence;
 using Application.Common.Services;
 using Infrastructure.Authentication;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -18,6 +20,8 @@ public static class DependencyInjectionRegisterer
         services.AddScoped<ISpaceRepository, SpaceRepository>()
             .AddScoped<IPostRepository, PostRepository>()
             .AddScoped<IMemberRepository, MemberRepository>();
+
+        services.AddDbContext<WorkWhisperDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("WorkWhisperDb")));
 
         AddAuthentication(services, configuration);
 

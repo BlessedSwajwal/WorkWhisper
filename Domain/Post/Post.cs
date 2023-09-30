@@ -1,9 +1,12 @@
 ﻿using Domain.Common.Models;
 using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.Entity;
+using Domain.Post.ValueObjects;
 
-namespace Domain.CompanySpace.Entity;
+namespace Domain.Post;
 
-public sealed class Post : Entity<PostId>
+public sealed class Post : AggregateRoot<PostId, Guid>
 {
     public string Title { get; private set; }
     public string Body { get; private set; }

@@ -1,14 +1,16 @@
 ﻿using Domain.Common.Models;
 using Domain.CompanySpace.ValueObjects;
+using Domain.Member.ValueObjects;
+using Domain.Post.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.CompanySpace.Entity;
+namespace Domain.Member;
 
-public sealed class Member : Entity<MemberId>
+public sealed class Member : AggregateRoot<MemberId, Guid>
 {
     public string Name { get; private set; }
     public CompanySpaceId CompanySpaceId { get; private set; }
@@ -31,9 +33,9 @@ public sealed class Member : Entity<MemberId>
         return new(MemberId.CreateUnique(), name, email, password, companySpaceId);
     }
 
-    public void AddPost(PostId postId)
+    public void AddPost(Guid postId)
     {
-        _postIds.Add(postId);
+        _postIds.Add(PostId.Create(postId));
     }
 
     private Member() { }

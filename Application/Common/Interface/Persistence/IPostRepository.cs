@@ -1,5 +1,7 @@
-﻿using Domain.CompanySpace.Entity;
-using Domain.CompanySpace.ValueObjects;
+﻿using Domain.Member.ValueObjects;
+using Domain.Post;
+using Domain.Post.Entity;
+using Domain.Post.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

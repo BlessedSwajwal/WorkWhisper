@@ -1,5 +1,5 @@
-﻿using Domain.CompanySpace.Entity;
-using Domain.CompanySpace.ValueObjects;
+﻿using Domain.Member;
+using Domain.Member.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
