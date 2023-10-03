@@ -25,6 +25,7 @@ public class UpvoteCommentCommandHandler : IRequestHandler<UpvoteCommentCommand>
 
         if (comment.UpvotingMemberIds.Contains(MemberId.Create(request.UserId))) { return; }
 
+        //TODO - Error: Not persisted.
         comment.Upvote(MemberId.Create(request.UserId));
     }
 }

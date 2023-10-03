@@ -13,33 +13,50 @@ namespace Infrastructure.Persistence.EFCoreRepositories;
 
 public class PostRepository : IPostRepository
 {
+    private readonly WorkWhisperDbContext _context;
+
+    public PostRepository(WorkWhisperDbContext context)
+    {
+        _context = context;
+    }
+
     public Post Add(Post post)
     {
-        throw new NotImplementedException();
+        _context.Posts.Add(post);
+        _context.SaveChanges();
+        return post;
     }
 
     public Comment AddComment(Guid postId, Comment comment)
     {
-        throw new NotImplementedException();
+        _context.Posts.FirstOrDefault(p => p.Id == PostId.Create(postId))!.AddComment(comment);
+        
+        _context.SaveChanges();
+        return comment;
     }
 
     public Post? GetById(PostId postId)
     {
-        throw new NotImplementedException();
+        return _context.Posts.FirstOrDefault(p=>p.Id==postId);
     }
 
     public Comment GetComment(PostId postId, CommentId commentId)
     {
-        throw new NotImplementedException();
+        return _context.Posts.FirstOrDefault(p => p.Id == postId).Comments
+            .FirstOrDefault(c => c.Id ==  commentId);
     }
 
     public List<Post> GetPostCollection(IReadOnlyCollection<PostId> postsIds)
     {
-        throw new NotImplementedException();
+        var posts = _context.Posts.Where(p => postsIds.Contains(p.Id));
+        return posts.ToList();
     }
 
     public void UpvotePost(MemberId memberId, Post post)
     {
-        throw new NotImplementedException();
+        post.Upvote(memberId);
+        _context.Posts.Attach(post);
+        _context.Posts.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        _context.SaveChanges();
     }
 }

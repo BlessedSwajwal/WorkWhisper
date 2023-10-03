@@ -11,18 +11,27 @@ namespace Infrastructure.Persistence.EFCoreRepositories;
 
 public class MemberRepository : IMemberRepository
 {
+    private readonly WorkWhisperDbContext _context;
+
+    public MemberRepository(WorkWhisperDbContext context)
+    {
+        _context = context;
+    }
+
     public Member Add(Member member)
     {
-        throw new NotImplementedException();
+        _context.Members.Add(member);
+        _context.SaveChanges();
+        return member;
     }
 
     public Member? GetMemberByEmail(string email)
     {
-        throw new NotImplementedException();
+        return _context.Members.FirstOrDefault(m => m.Email == email);
     }
 
     public Member? GetMemberById(MemberId memberId)
     {
-        throw new NotImplementedException();
+        return (_context.Members.FirstOrDefault(m =>m.Id == memberId));
     }
 }

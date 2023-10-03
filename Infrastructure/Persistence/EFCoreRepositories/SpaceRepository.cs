@@ -15,33 +15,43 @@ namespace Infrastructure.Persistence.EFCoreRepositories;
 
 public class SpaceRepository : ISpaceRepository
 {
+    private readonly WorkWhisperDbContext _context;
+
+    public SpaceRepository(WorkWhisperDbContext context)
+    {
+        _context = context;
+    }
+
     public void AddMember(Member member, CompanySpace space)
     {
-        throw new NotImplementedException();
+        space.AddMember(member.Id.Value);
+        _context.CompanySpaces.Attach(space);
+        _context.SaveChanges();
     }
 
     public void AddSpace(CompanySpace space)
     {
-        throw new NotImplementedException();
+        _context.CompanySpaces.Add(space);
+        _context.SaveChanges();
     }
 
     public IReadOnlyCollection<PostId> GetAllPostId(CompanySpaceId id)
     {
-        throw new NotImplementedException();
+        return _context.CompanySpaces.FirstOrDefault(cs => cs.Id == id)!.PostIds;
     }
 
     public List<CompanySpaceResult> GetAllSpaces()
     {
-        throw new NotImplementedException();
+        return _context.CompanySpaces.Select(sp => new CompanySpaceResult(sp.Id.Value, sp.Name)).ToList();
     }
 
     public CompanySpace GetSpaceById(CompanySpaceId companySpaceId)
     {
-        throw new NotImplementedException();
+        return _context.CompanySpaces.FirstOrDefault(cs => cs.Id == companySpaceId);
     }
 
     public bool MemberExistsOrNot(CompanySpaceId spaceId, MemberId memberId)
     {
-        throw new NotImplementedException();
+        return _context.CompanySpaces.FirstOrDefault(cs => cs.Id == spaceId)!.Members.Contains(memberId);
     }
 }
