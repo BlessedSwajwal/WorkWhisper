@@ -4,11 +4,6 @@ using Domain.CompanySpace.ValueObjects;
 using Domain.Member;
 using Domain.Member.ValueObjects;
 using Domain.Post.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Common.Interface.Persistence;
 
@@ -22,4 +17,5 @@ public interface ISpaceRepository
     IReadOnlyCollection<PostId> GetAllPostId(CompanySpaceId id);
     List<CompanySpaceResult> GetAllSpaces();
     void AddMember(Member member, CompanySpace space);
+    void UpdateSpace(CompanySpace space);
 }

@@ -12,20 +12,21 @@ namespace Application.Comments.Command.UpvoteComment;
 
 public class UpvoteCommentCommandHandler : IRequestHandler<UpvoteCommentCommand>
 {
-    private readonly IPostRepository _postRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpvoteCommentCommandHandler(IPostRepository postRepository)
+    public UpvoteCommentCommandHandler( IUnitOfWork unitOfWork)
     {
-        _postRepository = postRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpvoteCommentCommand request, CancellationToken cancellationToken)
     {
-        var comment = _postRepository.GetComment(PostId.Create(request.PostId), CommentId.Create(request.CommentId));
+        var comment = _unitOfWork.PostRepository.GetComment(PostId.Create(request.PostId), CommentId.Create(request.CommentId));
 
         if (comment.UpvotingMemberIds.Contains(MemberId.Create(request.UserId))) { return; }
 
-        //TODO - Error: Not persisted.
         comment.Upvote(MemberId.Create(request.UserId));
+        await _unitOfWork.SaveAsync();
+        _unitOfWork.Dispose();
     }
 }

@@ -21,7 +21,6 @@ public class MemberRepository : IMemberRepository
     public Member Add(Member member)
     {
         _context.Members.Add(member);
-        _context.SaveChanges();
         return member;
     }
 
@@ -33,5 +32,10 @@ public class MemberRepository : IMemberRepository
     public Member? GetMemberById(MemberId memberId)
     {
         return (_context.Members.FirstOrDefault(m =>m.Id == memberId));
+    }
+
+    public void UpdateMember(Member member)
+    {
+        _context.Members.Update(member);
     }
 }

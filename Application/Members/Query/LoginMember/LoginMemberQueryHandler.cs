@@ -14,21 +14,19 @@ namespace Application.Members.Query.LoginMember;
 
 public class LoginMemberQueryHandler : IRequestHandler<LoginMemberQuery, MemberResult>
 {
-    private readonly IMemberRepository _memberRepository;
-    private readonly ISpaceRepository _spaceRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtGenerator _jwtGenerator;
 
-    public LoginMemberQueryHandler(IMemberRepository memberRepository, ISpaceRepository spaceRepository, IJwtGenerator jwtGenerator)
+    public LoginMemberQueryHandler(IJwtGenerator jwtGenerator, IUnitOfWork unitOfWork)
     {
-        _memberRepository = memberRepository;
-        _spaceRepository = spaceRepository;
         _jwtGenerator = jwtGenerator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<MemberResult> Handle(LoginMemberQuery request, CancellationToken cancellationToken)
     {
         //Check if user exists.
-        Member member = _memberRepository.GetMemberByEmail(request.Email);
+        Member member = _unitOfWork.MemberRepository.GetMemberByEmail(request.Email);
         if (member is null) throw new InvalidCredentialsException();
 
         //Check password.
@@ -37,7 +35,11 @@ public class LoginMemberQueryHandler : IRequestHandler<LoginMemberQuery, MemberR
         if(!isCorrect) throw new InvalidCredentialsException();
 
         //Get the company space name
-        var companyName = _spaceRepository.GetSpaceById(member.CompanySpaceId).Name;
+        var companyName = _unitOfWork.SpaceRepository.GetSpaceById(member.CompanySpaceId).Name;
+
+        //Save changes and dispose UoW.
+        await _unitOfWork.SaveAsync();
+        _unitOfWork.Dispose();
 
         //Generate the token
         var token = _jwtGenerator.GenerateJwt(member);

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Posts.Query.GetPost;
 
-public class GetPostQueryHandler : AbstractValidator<GetPostQuery>
+public class GetPostQueryValidator : AbstractValidator<GetPostQuery>
 {
-	public GetPostQueryHandler()
+	public GetPostQueryValidator()
 	{
 		RuleFor(x => x.PostId).NotEmpty();
 	}

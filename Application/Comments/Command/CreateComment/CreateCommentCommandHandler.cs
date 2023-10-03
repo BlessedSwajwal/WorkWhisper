@@ -16,12 +16,12 @@ namespace Application.Comments.Command.CreateComment;
 public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CommentResult>
 {
     private readonly HttpContext _context;
-    private readonly IPostRepository _postRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCommentCommandHandler(IHttpContextAccessor context, IPostRepository commentRepository)
+    public CreateCommentCommandHandler(IHttpContextAccessor context, IUnitOfWork unitOfWork)
     {
         _context = context.HttpContext;
-        _postRepository = commentRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<CommentResult> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
@@ -35,8 +35,10 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
         var comment = Comment.Create(request.Comment, memberId);
 
         //save comment to post
-        _postRepository.AddComment(request.PostId, comment);
+        _unitOfWork.PostRepository.AddComment(request.PostId, comment);
 
+        await _unitOfWork.SaveAsync();
+        _unitOfWork.Dispose();
         var result = new CommentResult(comment.Id.Value, comment.Text, memberId, comment.UpvotingMemberIds.Count); 
         return result;
     }

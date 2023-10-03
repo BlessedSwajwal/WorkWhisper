@@ -23,7 +23,6 @@ public class PostRepository : IPostRepository
     public Post Add(Post post)
     {
         _context.Posts.Add(post);
-        _context.SaveChanges();
         return post;
     }
 
@@ -31,7 +30,6 @@ public class PostRepository : IPostRepository
     {
         _context.Posts.FirstOrDefault(p => p.Id == PostId.Create(postId))!.AddComment(comment);
         
-        _context.SaveChanges();
         return comment;
     }
 
@@ -57,6 +55,5 @@ public class PostRepository : IPostRepository
         post.Upvote(memberId);
         _context.Posts.Attach(post);
         _context.Posts.Entry(post).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        _context.SaveChanges();
     }
 }

@@ -13,4 +13,5 @@ public interface IMemberRepository
     Member Add(Member member);
     Member? GetMemberByEmail(string email);
     Member? GetMemberById(MemberId memberId);
+    void UpdateMember(Member member);
 }

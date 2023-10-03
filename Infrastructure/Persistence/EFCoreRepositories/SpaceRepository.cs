@@ -26,13 +26,11 @@ public class SpaceRepository : ISpaceRepository
     {
         space.AddMember(member.Id.Value);
         _context.CompanySpaces.Attach(space);
-        _context.SaveChanges();
     }
 
     public void AddSpace(CompanySpace space)
     {
         _context.CompanySpaces.Add(space);
-        _context.SaveChanges();
     }
 
     public IReadOnlyCollection<PostId> GetAllPostId(CompanySpaceId id)
@@ -53,5 +51,10 @@ public class SpaceRepository : ISpaceRepository
     public bool MemberExistsOrNot(CompanySpaceId spaceId, MemberId memberId)
     {
         return _context.CompanySpaces.FirstOrDefault(cs => cs.Id == spaceId)!.Members.Contains(memberId);
+    }
+
+    public void UpdateSpace(CompanySpace space)
+    {
+        _context.CompanySpaces.Update(space);
     }
 }

@@ -53,4 +53,9 @@ public class SpaceRepository : ISpaceRepository
 
         return space.Members.Any(member => member == memberId);
     }
+
+    public void UpdateSpace(CompanySpace space)
+    {
+        throw new NotImplementedException();
+    }
 }

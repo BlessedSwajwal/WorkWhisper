@@ -11,20 +11,22 @@ namespace Application.Space.Command;
 
 internal class CreateSpaceCommandHandler : IRequestHandler<CreateCompanySpaceCommand, CompanySpaceResult>
 {
-    private readonly ISpaceRepository _spaceRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateSpaceCommandHandler(ISpaceRepository spaceRepository)
+    public CreateSpaceCommandHandler(IUnitOfWork unitOfWork)
     {
-        _spaceRepository = spaceRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<CompanySpaceResult> Handle(CreateCompanySpaceCommand request, CancellationToken cancellationToken)
     {
         var space = CompanySpace.Create(request.Name);
 
-        _spaceRepository.AddSpace(space);
-        var spaceResult = new CompanySpaceResult(space.Name);
+        _unitOfWork.SpaceRepository.AddSpace(space);
+        await _unitOfWork.SaveAsync();
+        _unitOfWork.Dispose();
 
+        var spaceResult = new CompanySpaceResult(space.Name);
         return spaceResult;
     }
 }

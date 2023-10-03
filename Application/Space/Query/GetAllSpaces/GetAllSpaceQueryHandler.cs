@@ -11,16 +11,17 @@ namespace Application.Space.Query.GetAllSpaces;
 
 public class GetAllSpaceQueryHandler : IRequestHandler<GetAllSpacesQuery, List<CompanySpaceResult>>
 {
-    private readonly ISpaceRepository _spaceRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetAllSpaceQueryHandler(ISpaceRepository spaceRepository)
+    public GetAllSpaceQueryHandler(IUnitOfWork unitOfWork)
     {
-        _spaceRepository = spaceRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<CompanySpaceResult>> Handle(GetAllSpacesQuery request, CancellationToken cancellationToken)
     {
-        List<CompanySpaceResult> cs = _spaceRepository.GetAllSpaces();
+        List<CompanySpaceResult> cs = _unitOfWork.SpaceRepository.GetAllSpaces();
+        _unitOfWork.Dispose();
         return cs;
     }
 }

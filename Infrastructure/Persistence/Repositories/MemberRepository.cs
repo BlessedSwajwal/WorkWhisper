@@ -27,4 +27,9 @@ public class MemberRepository : IMemberRepository
     {
         return _members.FirstOrDefault(m => m.Id == memberId);
     }
+
+    public void UpdateMember(Member member)
+    {
+        throw new NotImplementedException();
+    }
 }

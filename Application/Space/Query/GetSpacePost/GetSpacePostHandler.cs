@@ -13,18 +13,16 @@ namespace Application.Space.Query.GetSpacePost;
 
 public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostResponse>>
 {
-    private readonly ISpaceRepository _spaceRepository;
-    private readonly IPostRepository _postRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetSpacePostHandler(ISpaceRepository spaceRepository, IPostRepository postRepository)
+    public GetSpacePostHandler(IUnitOfWork unitOfWork)
     {
-        _spaceRepository = spaceRepository;
-        _postRepository = postRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<List<PostResponse>> Handle(GetSpacePostQuery request, CancellationToken cancellationToken)
     {
-        //TODO - Use pagination
+        //TODO - Use pagination. Since the posts number are faily small, I am not using.
 
         bool memberOfSpace = false;
         List<PostResponse> result = new();
@@ -32,21 +30,26 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
 
 
         var spaceId = CompanySpaceId.Create(request.SpaceId);
-        var space = _spaceRepository.GetSpaceById(spaceId);
+        var space = _unitOfWork.SpaceRepository.GetSpaceById(spaceId);
 
         //Check if the member is of the space or not
         if (memberId is not null)
         {
-            memberOfSpace = _spaceRepository.MemberExistsOrNot(spaceId, MemberId.Create(Guid.Parse(memberId)));
+            memberOfSpace = _unitOfWork.SpaceRepository.MemberExistsOrNot(spaceId, MemberId.Create(Guid.Parse(memberId)));
         }
 
-        IReadOnlyCollection<PostId> postIds = _spaceRepository.GetAllPostId(spaceId);
-        List<Post> posts = _postRepository.GetPostCollection(postIds);
+        IReadOnlyCollection<PostId> postIds = _unitOfWork.SpaceRepository.GetAllPostId(spaceId);
+
+        List<Post> posts = _unitOfWork.PostRepository.GetPostCollection(postIds);
+
+        await _unitOfWork.SaveAsync();
+        _unitOfWork.Dispose();
         var commentResults = new List<CommentResult>();
 
         foreach (var post in posts)
         {
-            if (!memberOfSpace && post.IsPrivate){
+            if (!memberOfSpace && post.IsPrivate)
+            {
                 continue;
             }
 
@@ -55,20 +58,6 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
 
             result.Add(new PostResponse(post.Id.Value, post.Title, post.Body, spaceId, post.IsPrivate,post.UpvotingMemberIds.Count, commentResults));
         }
-        
-        //else
-        //{
-        //    foreach (var post in posts)
-        //    {
-        //        if (post.IsPrivate) continue;
-
-        //        var commentResults = new List<CommentResult>();
-        //        commentResults.AddRange(post.Comments.Select(comment =>
-        //            new CommentResult(comment.Id.Value, comment.Text, comment.CommentorId.Value, comment.UpvotingMemberIds.Count)));
-
-        //        result.Add(new PostResponse(post.Id.Value, post.Title, post.Body, spaceId, post.IsPrivate, commentResults));
-        //    }
-        //}
 
         return result;
     }

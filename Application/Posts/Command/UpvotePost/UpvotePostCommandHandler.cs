@@ -8,22 +8,25 @@ namespace Application.Posts.Command.UpvotePost;
 
 public class UpvotePostCommandHandler : IRequestHandler<UpvotePostCommand>
 {
-    private readonly IPostRepository _postRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpvotePostCommandHandler(IPostRepository postRepository)
+    public UpvotePostCommandHandler(IUnitOfWork unitOfWork)
     {
-        _postRepository = postRepository;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task Handle(UpvotePostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpvotePostCommand request, CancellationToken cancellationToken)
     {
-        var post = _postRepository.GetById(PostId.Create(request.postId));
+        var post = _unitOfWork.PostRepository.GetById(PostId.Create(request.postId));
         if(post is null) throw new NoSuchPostException();
 
-        if(post.UpvotingMemberIds.Contains(MemberId.Create(request.memberId))) { return Task.CompletedTask; }
+        if(post.UpvotingMemberIds.Contains(MemberId.Create(request.memberId))) { return; }
 
-        _postRepository.UpvotePost(MemberId.Create(request.memberId), post);
+        _unitOfWork.PostRepository.UpvotePost(MemberId.Create(request.memberId), post);
 
-        return Task.CompletedTask;
+        await _unitOfWork.SaveAsync();
+        _unitOfWork.Dispose();
+
+        return;
     }
 }
