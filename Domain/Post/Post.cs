@@ -2,6 +2,7 @@
 using Domain.CompanySpace.ValueObjects;
 using Domain.Member.ValueObjects;
 using Domain.Post.Entity;
+using Domain.Post.Events;
 using Domain.Post.ValueObjects;
 
 namespace Domain.Post;
@@ -34,7 +35,11 @@ public sealed class Post : AggregateRoot<PostId, Guid>
 
     public static Post Create(string title, string body, CompanySpaceId spaceId, MemberId memberId, bool isPrivate)
     {
-        return new(PostId.CreateUnique(), title, body, spaceId, memberId, isPrivate);
+        var post = new Post(PostId.CreateUnique(), title, body, spaceId, memberId, isPrivate);
+
+        post.AddEvent(new PostCreated(post));
+
+        return post;
     }
 
     public void AddComment(Comment comment)
