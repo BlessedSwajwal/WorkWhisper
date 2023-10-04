@@ -24,11 +24,14 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
 
     public async Task<PostResponse> Handle(CreatePostCommand request, CancellationToken cancellationToken)
     {
+        //Get the ID of the poster.
         var memberId = MemberId.Create(Guid.Parse(_context.User.Claims.FirstOrDefault(cl => cl.Type == ClaimTypes.NameIdentifier).Value));
 
+        //Get the member.
         var member = _unitOfWork.MemberRepository.GetMemberById(memberId);
         if (member is null) throw new MemberNotFoundException();
 
+        //Creating the post as per the request.
         Post post = Post.Create(
             title: request.Title,
             body: request.Body,
@@ -36,13 +39,13 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
             memberId: memberId,
             isPrivate: request.IsPrivate);
 
+        //Add the post to database.
         _unitOfWork.PostRepository.Add(post);
 
-
-
-        //Adding postId to the member
+        //Adding postId to the member. 
         member.AddPost(post.Id.Value);
 
+        //Update the member to reflect changes to its post list.
         _unitOfWork.MemberRepository.UpdateMember(member);
 
         //Addind postId to the space

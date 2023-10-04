@@ -21,10 +21,15 @@ public class UpvoteCommentCommandHandler : IRequestHandler<UpvoteCommentCommand>
 
     public async Task Handle(UpvoteCommentCommand request, CancellationToken cancellationToken)
     {
+        //Retriving the comment from the database. 
+
+        //TODO: Increment the upvote count directly in the database by checking if the upvoter has already not upvoted.
         var comment = _unitOfWork.PostRepository.GetComment(PostId.Create(request.PostId), CommentId.Create(request.CommentId));
 
+        //Checks whether the member has already upvoted the comment.
         if (comment.UpvotingMemberIds.Contains(MemberId.Create(request.UserId))) { return; }
 
+        //If not previously upvoted, upvotes and saves.
         comment.Upvote(MemberId.Create(request.UserId));
         await _unitOfWork.SaveAsync();
         _unitOfWork.Dispose();

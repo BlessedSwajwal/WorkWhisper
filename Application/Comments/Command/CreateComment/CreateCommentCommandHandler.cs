@@ -39,6 +39,7 @@ public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand,
 
         await _unitOfWork.SaveAsync();
         _unitOfWork.Dispose();
+
         var result = new CommentResult(comment.Id.Value, comment.Text, memberId, comment.UpvotingMemberIds.Count); 
         return result;
     }

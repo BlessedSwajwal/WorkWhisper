@@ -38,14 +38,14 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
             memberOfSpace = _unitOfWork.SpaceRepository.MemberExistsOrNot(spaceId, MemberId.Create(Guid.Parse(memberId)));
         }
 
+        //Retrieve all the posts from the DB.
         IReadOnlyCollection<PostId> postIds = _unitOfWork.SpaceRepository.GetAllPostId(spaceId);
-
         List<Post> posts = _unitOfWork.PostRepository.GetPostCollection(postIds);
 
         await _unitOfWork.SaveAsync();
         _unitOfWork.Dispose();
         
-
+        //Adding comment result to the response.
         foreach (var post in posts)
         {
             var commentResults = new List<CommentResult>();

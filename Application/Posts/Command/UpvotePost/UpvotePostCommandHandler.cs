@@ -20,6 +20,7 @@ public class UpvotePostCommandHandler : IRequestHandler<UpvotePostCommand>
         var post = _unitOfWork.PostRepository.GetById(PostId.Create(request.postId));
         if(post is null) throw new NoSuchPostException();
 
+        //Checks if the post has already been upvoted by the member.
         if(post.UpvotingMemberIds.Contains(MemberId.Create(request.memberId))) { return; }
 
         _unitOfWork.PostRepository.UpvotePost(MemberId.Create(request.memberId), post);
