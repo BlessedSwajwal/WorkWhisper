@@ -44,15 +44,15 @@ public class GetSpacePostHandler : IRequestHandler<GetSpacePostQuery, List<PostR
 
         await _unitOfWork.SaveAsync();
         _unitOfWork.Dispose();
-        var commentResults = new List<CommentResult>();
+        
 
         foreach (var post in posts)
         {
+            var commentResults = new List<CommentResult>();
             if (!memberOfSpace && post.IsPrivate)
             {
                 continue;
             }
-
             commentResults.AddRange(post.Comments.Select(comment =>
                   new CommentResult(comment.Id.Value, comment.Text,comment.CommentorId.Value, comment.UpvotingMemberIds.Count)));
 

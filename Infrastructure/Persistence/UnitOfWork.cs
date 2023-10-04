@@ -1,31 +1,31 @@
 ﻿using Application.Common.Interface.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infrastructure.Persistence.EFCoreRepositories;
 
 namespace Infrastructure.Persistence;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
     private readonly WorkWhisperDbContext _context;
-    private ISpaceRepository _spaceRepository;
-    private IMemberRepository _memberRepository;
-    private IPostRepository _postRepository;
+    private readonly ISpaceRepository _spaceRepository;
+    private readonly IMemberRepository _memberRepository;
+    private readonly IPostRepository _postRepository;
     private bool _disposed = false;
 
-    public ISpaceRepository SpaceRepository { get { return _spaceRepository; } }
-    public IMemberRepository MemberRepository { get { return _memberRepository; } }
-    public IPostRepository PostRepository { get { return _postRepository; } }
-    public UnitOfWork(WorkWhisperDbContext ctx, ISpaceRepository spaceRepository, IMemberRepository memberRepository, IPostRepository postRepository)
+    public ISpaceRepository SpaceRepository { get {
+            if (_spaceRepository is null) 
+                return new SpaceRepository(_context);
+            return _spaceRepository; } }
+    public IMemberRepository MemberRepository { get { 
+            if(_memberRepository is null)
+                return new MemberRepository(_context);
+            return _memberRepository; } }
+    public IPostRepository PostRepository { get { 
+            if(_postRepository is null)
+                return new PostRepository(_context);
+            return _postRepository; } }
+    public UnitOfWork(WorkWhisperDbContext ctx)
     {
         _context = ctx;
-        _spaceRepository = spaceRepository;
-        _memberRepository = memberRepository;
-        _postRepository = postRepository;
     }
 
     private void Dispose(bool disposing)

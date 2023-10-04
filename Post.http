@@ -1,6 +1,6 @@
 @host=https://localhost:7278/posts
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY2ZjFjZjc1LTBhY2YtNDBjZi1hZTUyLTgwZjJkMzhjYWNmYyIsIlNwYWNlSWQiOiI4NGUyMGJlNy00YWY0LTQzNGItODQyYi1jNjQyZGE3NDc0ZDIiLCJleHAiOjE2OTY5MTc0NTMsImlzcyI6IldvcmtXaGlzcGVyIiwiYXVkIjoiTWVtYmVyIn0.rST6VH-qMmt8vz8uAdOqwImFbFFJy8kSltnimLNjNmU
-@postId=a6a15194-1431-4003-9355-8c201adf2dc1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImI0MjY1ZTk0LThkZjktNDhlZi1hZGY3LWQ5NjllMjY0NDg2ZCIsIlNwYWNlSWQiOiJhM2Q3ZWRmYi1iNzkxLTQzMDktYjI2MC1jYzA0NDFjMzg4N2MiLCJleHAiOjE2OTcwMDQ4MjEsImlzcyI6IldvcmtXaGlzcGVyIiwiYXVkIjoiTWVtYmVyIn0.q_JuXh2yQI8jWarJNyY05fyE6GO5A7ag_IlAGzZPI8s
+@postId=1a113bf1-644c-4880-a07e-4ea5d3bb1e70
 @commentId=1f350831-34cd-4bef-9865-fe1651f2fe7f
 POST {{host}}/create
 Content-Type: application/json
@@ -24,7 +24,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "CommentText": "Second"
+    "CommentText": "h"
 }
 
 #######

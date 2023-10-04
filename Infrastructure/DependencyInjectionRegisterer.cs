@@ -18,10 +18,6 @@ public static class DependencyInjectionRegisterer
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ISpaceRepository, SpaceRepository>()
-            .AddScoped<IPostRepository, PostRepository>()
-            .AddScoped<IMemberRepository, MemberRepository>();
-
         services.AddDbContext<WorkWhisperDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("WorkWhisperDb")));
 
         AddAuthentication(services, configuration);

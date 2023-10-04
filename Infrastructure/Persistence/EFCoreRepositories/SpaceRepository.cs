@@ -35,7 +35,9 @@ public class SpaceRepository : ISpaceRepository
 
     public IReadOnlyCollection<PostId> GetAllPostId(CompanySpaceId id)
     {
-        return _context.CompanySpaces.FirstOrDefault(cs => cs.Id == id)!.PostIds;
+        var space = _context.CompanySpaces.FirstOrDefault(cs => cs.Id == id)!;
+        var postIds = space.PostIds;
+        return postIds;
     }
 
     public List<CompanySpaceResult> GetAllSpaces()
