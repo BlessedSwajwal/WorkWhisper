@@ -42,19 +42,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, PostR
         //Add the post to database.
         _unitOfWork.PostRepository.Add(post);
 
-        //Adding postId to the member. 
-        member.AddPost(post.Id.Value);
-
-        //Update the member to reflect changes to its post list.
-        _unitOfWork.MemberRepository.UpdateMember(member);
-
-        //Addind postId to the space
-        var space = _unitOfWork.SpaceRepository.GetSpaceById(member.CompanySpaceId);
-        if (space is null) throw new SpaceNotFoundException();
-        space.AddPost(post.Id.Value);
-
-        _unitOfWork.SpaceRepository.UpdateSpace(space);
-
         await _unitOfWork.SaveAsync();
         _unitOfWork.Dispose();
 

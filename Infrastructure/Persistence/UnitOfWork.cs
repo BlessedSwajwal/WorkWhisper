@@ -1,10 +1,14 @@
 ﻿using Application.Common.Interface.Persistence;
+using Domain.Common.Models;
 using Infrastructure.Persistence.EFCoreRepositories;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 public sealed class UnitOfWork : IUnitOfWork
 {
+    private readonly IPublisher _publisher;
     private readonly WorkWhisperDbContext _context;
     private readonly ISpaceRepository _spaceRepository;
     private readonly IMemberRepository _memberRepository;
@@ -23,9 +27,10 @@ public sealed class UnitOfWork : IUnitOfWork
             if(_postRepository is null)
                 return new PostRepository(_context);
             return _postRepository; } }
-    public UnitOfWork(WorkWhisperDbContext ctx)
+    public UnitOfWork(WorkWhisperDbContext ctx, IPublisher publisher)
     {
         _context = ctx;
+        _publisher = publisher;
     }
 
     private void Dispose(bool disposing)
@@ -48,7 +53,35 @@ public sealed class UnitOfWork : IUnitOfWork
 
     public async Task SaveAsync()
     {
+        await PublishDomainEvents();
        await _context.SaveChangesAsync();
     }
 
+    private async Task PublishDomainEvents()
+    {
+        //Get the dbContext.
+        if (_context is null) return;
+
+        //Get entities that is to be saved.
+        var entitiesWithDomainEvents = _context.ChangeTracker.Entries<IHasDomainEvents>()
+            .Where(entries => entries.Entity.DomainEvents.Any())
+            .Select(entry => entry.Entity).ToList();
+
+        //Get the domain events.
+        var domainEvents = entitiesWithDomainEvents.SelectMany(entity => entity.DomainEvents).ToList();
+
+        //Clear the domain events list
+        foreach (var entity in entitiesWithDomainEvents)
+        {
+            entity.ClearDomainEvents();
+        }
+
+        //Publish Domain events
+        foreach (var domainevent in domainEvents)
+        {
+            await _publisher.Publish(domainevent);
+        }
+
+        return;
+    }
 }

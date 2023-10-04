@@ -3,7 +3,6 @@ using Application.Common.Services;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.EFCoreRepositories;
-using Infrastructure.Persistence.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +17,6 @@ public static class DependencyInjectionRegisterer
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<PublishDomainEventsInterceptor>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddDbContext<WorkWhisperDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("WorkWhisperDb")));
 
